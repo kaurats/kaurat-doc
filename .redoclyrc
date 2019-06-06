@@ -1,0 +1,8 @@
+
+apiTitle: tat-doc
+splitSpec: true
+codeSamples: true
+swaggerUI: false
+travis: true
+repo: Tataro/tat-doc
+oasVersion: 3.0.0
