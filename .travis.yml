@@ -4,7 +4,7 @@ node_js:
 deploy:
   - skip_cleanup: true
     provider: script
-    script: npm run build && npm run gh-pages
+    script: npm run build && node scripts.js
     on:
       branch: master
   - skip_cleanup: true
