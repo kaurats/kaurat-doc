@@ -10,51 +10,39 @@ info:
     url: './kaurat-logo.png'
     backgroundColor: 'rgb(38, 49, 56)'
   description: >
-    This is an **examplee** API to demonstrate features of OpenAPI specification
+    # Overview
 
-    # Introduction
+    Kaurat API is built on HTTP. Our API is RESTful. 
+    It has predictable resource URLs. It returns HTTP response codes to indicate errors. 
+    It also accepts and returns JSON in the HTTP body. 
+    You can use your favorite HTTP/REST library for your programming language to use Kaurat's API.
 
-    This specification is intended to to be a good starting point for describing
-    your API in 
+    # Authentication
 
-    [OpenAPI/Swagger
-    format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
-
-    It also demonstrates features of
-    [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
-    tool and 
-
-    [ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond
-    the standard OpenAPI syntax we use a few 
-
-    [vendor
-    extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-
-
-    # OpenAPI Specification
-
-    The goal of The OpenAPI Specification is to define a standard,
-    language-agnostic interface to REST APIs which
-
-    allows both humans and computers to discover and understand the capabilities
-    of the service without access to source
-
-    code, documentation, or through network traffic inspection. When properly
-    defined via OpenAPI, a consumer can 
-
-    understand and interact with the remote service with a minimal amount of
-    implementation logic. Similar to what
-
-    interfaces have done for lower-level programming, OpenAPI removes the
-    guesswork in calling the service.
-externalDocs:
-  description: Find out how to create Github repo for your OpenAPI spec.
-  url: 'https://github.com/Rebilly/generator-openapi-repo'
+    To access each APIs, you need to get `api_key` for specify you organization. 
+    Authentication for Kaurat is based on [key-auth](https://en.wikipedia.org/wiki/Key_authentication).
+x-tagGroups:
+  - name: User
+    tags:
+      - User
+  - name: Token
+    tags:
+      - Lock
 tags:
-  - name: Echo
-    description: Example echo operations
+  - name: Lock
+    description: Deposit Kaurat for some period of time.
+  - name: Request
+    description: Deposit Kaurat for some period of time.
+  - name: Send
+    description: Deposit Kaurat for some period of time.
+  - name: Swap
+    description: Deposit Kaurat for some period of time.
+  - name: Withdraw
+    description: Deposit Kaurat for some period of time.
   - name: User
     description: Operations about user
 servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
+  - url: 'http://api.kaurat.com/v1'
+    description: Main (production) server
+  - url: 'http://api-staging.kaurat.com/v1'
+    description: Internal staging server for testing
