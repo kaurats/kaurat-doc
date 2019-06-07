@@ -1,16 +1,13 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: APIINW
+  title: Kaurat API Reference
   termsOfService: 'https://example.com/terms/'
   contact:
-    email: contact@example.com
-    url: 'http://example.com/contact'
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    email: support@kaurat.com
+    url: 'http://test.kaurat.com'
   x-logo:
-    url: 'https://apis.guru/openapi-template/logo.png'
+    url: 'https://tataro.github.io/tat-doc/kaurat-logo.png'
   description: >
     This is an **example** API to demonstrate features of OpenAPI specification
 
