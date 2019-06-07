@@ -1,20 +1,10 @@
-# tat-doc OpenAPI Specification
-[![Build Status](https://travis-ci.com/Tataro/tat-doc.svg?branch=master)](https://travis-ci.com/Tataro/tat-doc)
-## Steps to finish
-
-1. Enable [Travis](https://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI%3A) for your repository (**note**: you already have `.travis.yml` file)
-1. [Create GitHub access token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/); select `public_repo` on `Select scopes` section.
-1. Use the token value as a value for [Travis environment variable](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings) with the name `GH_TOKEN`
-1. Make a test commit to trigger CI: `git commit --allow-empty -m "Test Travis CI" && git push`
-1. Wait until Travis build is finished. You can check progress by clicking on the `Build Status` badge at the top
-1. **[Optional]** You can setup [custom domain](https://help.github.com/articles/using-a-custom-domain-with-github-pages/) (just create `web/CNAME` file)
-1. **[Optional]** If your API is public consider adding it into [APIs.guru](https://APIs.guru) directory using [this form](https://apis.guru/add-api/).
-1. Delete this section ❌
+# Kaurat API Reference 📖
+[![Build Status](https://travis-ci.com/CochainLab/kaurat-doc.svg?branch=master)](https://travis-ci.com/CochainLab/kaurat-doc)
 
 ## Links
 
-- [Reference Documentation (ReDoc)](https://tataro.github.io/tat-doc/)
-- OpenAPI Raw Files: [JSON](https://tataro.github.io/tat-doc/openapi.json) [YAML](https://tataro.github.io/tat-doc/openapi.yaml)
+- [Reference Documentation (ReDoc)](https://cochainlab.github.io/kaurat-doc/)
+- OpenAPI Raw Files: [JSON](https://cochainlab.github.io/kaurat-doc/openapi.json) [YAML](https://cochainlab.github.io/kaurat-doc/openapi.yaml)
 
 **Warning:** All above links are updated only after Travis CI finishes deployment
 
