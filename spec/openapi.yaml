@@ -19,7 +19,7 @@ info:
 
     # Authentication
 
-    To access each APIs, you need to get `api_key` for specify you organization. 
+    To access each APIs, you need to have `api_key` for specify you organization. 
     Authentication for Kaurat is based on [key-auth](https://en.wikipedia.org/wiki/Key_authentication).
 x-tagGroups:
   - name: User

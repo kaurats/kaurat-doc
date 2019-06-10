@@ -1,47 +1,79 @@
 get:
   tags:
     - Lock
-post:
-  tags:
-    - Lock
-  summary: Echo test
-  description: Receive the exact message you've sent
-  operationId: token
+  summary: Get Deposits
+  description: List all deposits from user
   security:
     - api_key: []
+  parameters:
+    - in: query
+      name: uid
+      description: user id
+      required: true
+      schema:
+        type: string
   responses:
     '200':
       description: OK
-      headers:
-        X-Rate-Limit:
-          description: calls per hour allowed by the user
-          schema:
-            type: integer
-            format: int32
-        X-Expires-After:
-          $ref: '#/components/headers/ExpiresAfter'
       content:
         application/json:
           schema:
-            type: string
-          examples:
-            response:
-              value: Hello world!
-        application/xml:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Token_Lock'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
           schema:
-            type: string
-        text/csv:
-          schema:
-            type: string
+            $ref: '#/components/schemas/Error'
+post:
+  tags:
+    - Lock
+  summary: Create Deposit
+  description: lock token for some period to get an interest
+  security:
+    - api_key: []
   requestBody:
     content:
       application/json:
         schema:
-          type: string
-          example: Hello world!
-      application/xml:
-        schema:
-          type: string
-          example: Hello world!
-    description: Echo payload
-    required: true
+          type: object
+          properties:
+            uid:
+              type: string
+              description: user id
+              example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+            amount:
+              type: number
+              description: amount (multiple by 1e8)
+              example: 20000000000
+            period:
+              type: number
+              description: period of deposit (90, 180 or 360)
+              example: 90
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Lock'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

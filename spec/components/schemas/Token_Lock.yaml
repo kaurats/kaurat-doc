@@ -1,0 +1,45 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+  amount:
+    type: number
+    description: amount (multiple by 1e8)
+    example: 200000000000
+  currency:
+    type: string
+    description: digital currency unit
+    example: kaurat
+  daily_interest:
+    type: number
+    description: interest that will receive daily
+    example: 5424657.534246575
+  expected_interest:
+    type: number
+    description: expected total interest will receive
+    example: 488219178.08219177
+  expired:
+    type: number
+    description: expired date (in unix)
+    example: 1565049600000
+  period:
+    type: number
+    description: period of deposit
+    example: 90
+  rate:
+    type: number
+    description: rate
+    example: 0.99
+  timestamp:
+    type: number
+    description: created time
+    example: 1557205561493
+  type:
+    type: string
+    description: action type
+    example: lock_up
+  uid:
+    type: string
+    description: user id
+    example: 5KUziQMxqDOSWGaIytZdRgJIZmt1

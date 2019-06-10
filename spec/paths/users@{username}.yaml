@@ -25,8 +25,6 @@ get:
       schema:
         type: boolean
   security:
-    - main_auth:
-        - 'read:users'
     - api_key: []
   responses:
     '200':
@@ -55,9 +53,6 @@ put:
       required: true
       schema:
         type: string
-  security:
-    - main_auth:
-        - 'write:users'
   responses:
     '200':
       description: OK

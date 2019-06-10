@@ -1,0 +1,9 @@
+type: object
+properties:
+  error:
+    type: object
+    properties:
+      trace_id:
+        type: string
+      message:
+        type: string
