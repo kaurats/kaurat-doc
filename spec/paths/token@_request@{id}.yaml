@@ -1,0 +1,53 @@
+put:
+  tags:
+    - Request
+  summary: Update Request Status
+  security:
+    - api_key: []
+  parameters:
+    - name: id
+      in: path
+      description: request id
+      required: true
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            uid:
+              type: string
+              description: user id of this request
+              example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+            status:
+              type: number
+              description: approved (1) or rejected (9) 
+              example: 1
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                type: object
+                properties:
+                  reqId:
+                    type: string
+                    example: 7QU63dyB2RJolwFaJd0g
+                  status:
+                    type: number
+                    example: 1
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

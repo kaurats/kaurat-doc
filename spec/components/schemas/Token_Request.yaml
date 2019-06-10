@@ -1,0 +1,33 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+  uid:
+    type: string
+    description: request from user
+    example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+  to_uid:
+    type: string
+    description: request to user
+    example: 5KUziQMxqDOSWGaIytZdRgJIZmt
+  amount:
+    type: number
+    description: amount (multiple by 1e8)
+    example: 200000000000
+  currency:
+    type: string
+    description: digital currency unit
+    example: kaurat
+  done:
+    type: boolean
+    description: whether this request finish or not
+    example: false
+  status:
+    type: number
+    description: pending (0), approved (1), rejected (9) 
+    example: 0
+  timestamp:
+    type: number
+    description: created time
+    example: 1557205561493

@@ -1,0 +1,79 @@
+get:
+  tags:
+    - Request
+  summary: Get Requests
+  description: List all requests from user
+  security:
+    - api_key: []
+  parameters:
+    - in: query
+      name: uid
+      description: user id
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Token_Request'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+post:
+  tags:
+    - Request
+  summary: Create Request
+  description: create token request
+  security:
+    - api_key: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            uid:
+              type: string
+              description: request from user
+              example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+            to_uid:
+              type: string
+              description: request to user
+              example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+            amount:
+              type: number
+              description: amount (multiple by 1e8)
+              example: 20000000000
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Request'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
