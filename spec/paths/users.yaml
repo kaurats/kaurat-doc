@@ -1,14 +1,8 @@
 get:
   tags:
     - User
-  summary: Get user by user ID
-  parameters:
-    - name: uid
-      in: path
-      description: user id
-      required: true
-      schema:
-        type: string
+  summary: Get Users
+  description: List all users in organization
   security:
     - api_key: []
   responses:
@@ -23,7 +17,9 @@ get:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/User'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
     '500':
       description: 'Something wrong'
       content:
