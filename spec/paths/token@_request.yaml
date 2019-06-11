@@ -37,7 +37,7 @@ post:
   tags:
     - Request
   summary: Create Request
-  description: create token request
+  description: create token request transaction
   security:
     - api_key: []
   requestBody:

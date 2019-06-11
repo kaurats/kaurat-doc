@@ -1,0 +1,48 @@
+post:
+  tags:
+    - Swap
+  summary: Create Swap
+  description: create swap transaction
+  security:
+    - api_key: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            uid:
+              type: string
+              description: request from user
+              example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+            amount:
+              type: number
+              description: amount (multiple by 1e8)
+              example: 1500000000
+            from:
+              type: string
+              description: digital currency unit
+              example: kaurat
+            to:
+              type: string
+              description: digital currency unit
+              example: cny
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Swap'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

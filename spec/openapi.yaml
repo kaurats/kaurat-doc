@@ -30,6 +30,7 @@ x-tagGroups:
       - Lock
       - Request
       - Send
+      - Swap
 tags:
   - name: Lock
     description: Deposit Kaurat for some period of time. (minimum is `2000` kaurat)
@@ -38,7 +39,7 @@ tags:
   - name: Send
     description: Send token to other user in platform
   - name: Swap
-    description: Deposit Kaurat for some period of time.
+    description: Swap currency unit
   - name: Withdraw
     description: Deposit Kaurat for some period of time.
   - name: User

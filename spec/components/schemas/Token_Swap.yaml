@@ -1,0 +1,41 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+  uid:
+    type: string
+    description: request from user
+    example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+  amount:
+    type: number
+    description: to be swap amount (multiple by 1e8)
+    example: 1500000000
+  fee:
+    type: number
+    description: fee for swap
+    example: 15000000
+  rate:
+    type: number
+    description: fee rate
+    example: 0.15
+  receive:
+    type: number
+    description: received amount (multiple by 1e8)
+    example: 10000000000
+  from_currency:
+    type: string
+    description: digital currency unit
+    example: kaurat
+  to_currency:
+    type: string
+    description: digital currency unit
+    example: cny
+  type:
+    type: string
+    description: action type
+    example: swap
+  timestamp:
+    type: number
+    description: created time
+    example: 1557205561493
