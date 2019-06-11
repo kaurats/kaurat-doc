@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Withdraw
+  summary: Get Withdraw
+  security:
+    - api_key: []
+  parameters:
+    - name: id
+      in: path
+      description: withdraw id
+      required: true
+      schema:
+        type: string
+    - in: query
+      name: uid
+      description: user id
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Withdraw'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

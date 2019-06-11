@@ -1,0 +1,53 @@
+post:
+  tags:
+    - Withdraw
+  summary: Create Withdraw
+  description: Create withdraw request, after create the platform will send email for verify
+   then will be send to admin to approved
+  security:
+    - api_key: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            uid:
+              type: string
+              description: request from user
+              example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+            amount:
+              type: number
+              description: amount (multiple by 1e8)
+              example: 20000000000
+            currency:
+              type: string
+              description: digital currency unit
+              enum:
+                - kaurat
+                - usd
+                - cny
+              example: kaurat
+            address:
+              type: string
+              description: address to transfer to
+              example: df574Dd990C4db23756356B924F4a50b8D7832E4
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Withdraw'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
