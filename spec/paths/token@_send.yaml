@@ -1,0 +1,52 @@
+post:
+  tags:
+    - Send
+  summary: Create Send
+  description: create send transaction
+  security:
+    - api_key: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            uid:
+              type: string
+              description: request from user
+              example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+            to_uid:
+              type: string
+              description: request to user
+              example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+            amount:
+              type: number
+              description: amount (multiple by 1e8)
+              example: 20000000000
+            currency:
+              type: string
+              description: digital currency unit
+              example: kaurat
+            note:
+              type: string
+              description: Optional message for take note
+              example: send to tom for a gift.
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_completed:
+                type: boolean
+                example: true
+              data:
+                $ref: '#/components/schemas/Token_Send'
+    '500':
+      description: 'Something wrong'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
