@@ -39,7 +39,7 @@ post:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/Token_Swap'
+                $ref: '#/components/schemas/Transaction_Swap'
     '500':
       description: 'Something wrong'
       content:

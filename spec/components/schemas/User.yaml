@@ -1,19 +1,82 @@
 type: object
 properties:
-  username:
-    description: User supplied username
-    type: string
-    minLength: 4
-    example: John78
-  firstName:
-    description: User first name
-    type: string
-    minLength: 1
-    example: John
-  lastName:
-    description: User last name
-    type: string
-    minLength: 1
-    example: Smith
-  email:
-    $ref: '#/components/schemas/Email'
+  ids:
+    type: object
+    properties:
+      running_id:
+        type: number
+        description: running number of registration
+        example: 5
+      btc_address:
+        type: string
+        description: bitcoin address
+        example: df574Dd990C4db23756356B924F4a50b8D7832E4
+  kyc:
+    type: object
+    properties:
+      timezone:
+        type: string
+        description: timezone of user 
+        example: Asia/Bangkok
+      email:
+        type: string
+        description: email address 
+        example: kaurat@gmail.com
+      tier:
+        type: number
+        description: user tier determine how much user able to withdraw
+        example: 1
+      username_u:
+        type: string
+        description: username in uppercase
+        example: HARRY01
+      img:
+        type: string
+        description: image url
+        example: http://www.kaurat.com/images/john.png
+      lastname:
+        type: string
+        example: Potter
+      created_time:
+        type: number
+        example: 1557205561493
+      firstname:
+        type: string
+        example: Harry
+      username:
+        type: string
+        example: Harry01
+      updated_time:
+        type: number
+        example: 1557205561493
+      role:
+        type: string
+        description: Optional role of user
+        example: user
+      birthdate:
+        type: number
+        description: date of birth
+        example: 1557205561493
+      isTierInReview:
+        type: boolean
+        description: if user is in review or not
+        example: false
+      oid:
+        type: string
+        description: organization id
+        example: jCTXdl8GxzC5LMKKXQL9
+  wallet:
+    type: object
+    properties:
+      kaurat:
+        type: number
+        description: kaurat currency (multiple by 1e8)
+        example: 1178441921385
+      usd:
+        type: number
+        description: usd currency (multiple by 1e8)
+        example: 0
+      cny:
+        type: number
+        description: cny currency (multiple by 1e8)
+        example: 66000000000

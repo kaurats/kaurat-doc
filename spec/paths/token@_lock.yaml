@@ -26,7 +26,7 @@ get:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Token_Lock'
+                  $ref: '#/components/schemas/Transaction_Lock'
     '500':
       description: 'Something wrong'
       content:
@@ -70,7 +70,7 @@ post:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/Token_Lock'
+                $ref: '#/components/schemas/Transaction_Lock'
     '500':
       description: 'Something wrong'
       content:

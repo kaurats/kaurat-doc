@@ -43,7 +43,7 @@ post:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/Token_Send'
+                $ref: '#/components/schemas/Transaction_Send'
     '500':
       description: 'Something wrong'
       content:

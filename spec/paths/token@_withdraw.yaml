@@ -44,7 +44,7 @@ post:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/Token_Withdraw'
+                $ref: '#/components/schemas/Withdraw_Invoice'
     '500':
       description: 'Something wrong'
       content:

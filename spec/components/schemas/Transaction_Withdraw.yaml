@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: string
+    example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+  invoice_id:
+    type: string
+    example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+  uid:
+    type: string
+    description: user id
+    example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+  address:
+    type: string
+    description: address to transfer to
+    example: df574Dd990C4db23756356B924F4a50b8D7832E4
+  amount:
+    type: number
+    description: amount (multiple by 1e8)
+    example: 200000000000
+  currency:
+    type: string
+    description: digital currency unit
+    example: kaurat
+  type:
+    type: string
+    description: action type
+    example: withdraw
+  timestamp:
+    type: number
+    description: created time
+    example: 1557205561493

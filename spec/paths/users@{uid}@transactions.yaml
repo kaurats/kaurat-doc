@@ -1,17 +1,12 @@
 get:
   tags:
-    - Withdraw
-  summary: Get Withdraw
+    - User
+  summary: Get Transactions
+  description: List all transactions from user
   security:
     - api_key: []
   parameters:
-    - name: id
-      in: path
-      description: withdraw id
-      required: true
-      schema:
-        type: string
-    - in: query
+    - in: path
       name: uid
       description: user id
       required: true
@@ -29,7 +24,14 @@ get:
                 type: boolean
                 example: true
               data:
-                $ref: '#/components/schemas/Withdraw_Invoice'
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/Transaction_Lock'
+                    - $ref: '#/components/schemas/Transaction_Send'
+                    - $ref: '#/components/schemas/Transaction_Swap'
+                    - $ref: '#/components/schemas/Transaction_Request'
+                    - $ref: '#/components/schemas/Transaction_Withdraw' 
     '500':
       description: 'Something wrong'
       content:
