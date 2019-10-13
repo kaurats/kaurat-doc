@@ -3,8 +3,8 @@
 
 ## Links
 
-- [Reference Documentation (ReDoc)](https://cochainlab.github.io/kaurat-doc/)
-- OpenAPI Raw Files: [JSON](https://cochainlab.github.io/kaurat-doc/openapi.json) [YAML](https://cochainlab.github.io/kaurat-doc/openapi.yaml)
+- [Reference Documentation (ReDoc)](https://kaurats.github.io/kaurat-doc/)
+- OpenAPI Raw Files: [JSON](https://kaurats.github.io/kaurat-doc/openapi.json) [YAML](https://kaurats.github.io/kaurat-doc/openapi.yaml)
 
 **Warning:** All above links are updated only after Travis CI finishes deployment
 
