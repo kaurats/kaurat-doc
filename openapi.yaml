@@ -1,0 +1,1157 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Kaurat API Reference
+  termsOfService: 'https://example.com/terms/'
+  contact:
+    email: support@kaurat.com
+    url: 'http://test.kaurat.com'
+  x-logo:
+    url: ./kaurat-logo.png
+    backgroundColor: 'rgb(38, 49, 56)'
+  description: |
+    # Overview
+    Kaurat API is built on HTTP. Our API is RESTful.  It has predictable resource URLs. It returns HTTP response codes to indicate errors.  It also accepts and returns JSON in the HTTP body.  You can use your favorite HTTP/REST library for your programming language to use Kaurat's API.
+    # Authentication
+    To access each APIs, you need to have `api_key` for specify you organization.  Authentication for Kaurat is based on [key-auth](https://en.wikipedia.org/wiki/Key_authentication).
+x-tagGroups:
+  - name: User
+    tags:
+      - User
+  - name: Token
+    tags:
+      - Lock
+      - Request
+      - Send
+      - Swap
+      - Withdraw
+tags:
+  - name: Lock
+    description: Deposit Kaurat for some period of time. (minimum is `2000` kaurat)
+  - name: Request
+    description: Request token from people in platform
+  - name: Send
+    description: Send token to other user in platform
+  - name: Swap
+    description: Swap currency unit
+  - name: Withdraw
+    description: Withdraw token from wallet
+  - name: User
+    description: Operations about user
+servers:
+  - url: 'http://api.kaurat.com/v1'
+    description: Main (production) server
+  - url: 'http://api-staging.kaurat.com/v1'
+    description: Internal staging server for testing
+paths:
+  /token/_lock:
+    get:
+      tags:
+        - Lock
+      summary: Get Deposits
+      description: List all deposits from user
+      security:
+        - api_key: []
+      parameters:
+        - in: query
+          name: uid
+          description: user id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction_Lock'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Lock
+      summary: Create Deposit
+      description: lock token for some period to get an interest
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id
+                  example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+                amount:
+                  type: number
+                  description: amount (multiple by 1e8)
+                  example: 20000000000
+                period:
+                  type: number
+                  description: 'period of deposit (90, 180 or 360)'
+                  example: 90
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Transaction_Lock'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /token/_request:
+    get:
+      tags:
+        - Request
+      summary: Get Requests
+      description: List all requests from user
+      security:
+        - api_key: []
+      parameters:
+        - in: query
+          name: uid
+          description: user id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Token_Request'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Request
+      summary: Create Request
+      description: create token request transaction
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: request from user
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                to_uid:
+                  type: string
+                  description: request to user
+                  example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+                amount:
+                  type: number
+                  description: amount (multiple by 1e8)
+                  example: 20000000000
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Token_Request'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/token/_request/{id}':
+    put:
+      tags:
+        - Request
+      summary: Update Request Status
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: request id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id of this request
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                status:
+                  type: number
+                  description: approved (1) or rejected (9)
+                  example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      reqId:
+                        type: string
+                        example: 7QU63dyB2RJolwFaJd0g
+                      status:
+                        type: number
+                        example: 1
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /token/_send:
+    post:
+      tags:
+        - Send
+      summary: Create Send
+      description: create send transaction
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: request from user
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                to_uid:
+                  type: string
+                  description: request to user
+                  example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+                amount:
+                  type: number
+                  description: amount (multiple by 1e8)
+                  example: 20000000000
+                currency:
+                  type: string
+                  description: digital currency unit
+                  example: kaurat
+                note:
+                  type: string
+                  description: Optional message for take note
+                  example: send to tom for a gift.
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Transaction_Send'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /token/_swap:
+    post:
+      tags:
+        - Swap
+      summary: Create Swap
+      description: create swap transaction
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: request from user
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                amount:
+                  type: number
+                  description: amount (multiple by 1e8)
+                  example: 1500000000
+                from:
+                  type: string
+                  description: digital currency unit
+                  example: kaurat
+                to:
+                  type: string
+                  description: digital currency unit
+                  example: cny
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Transaction_Swap'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /token/_withdraw:
+    post:
+      tags:
+        - Withdraw
+      summary: Create Withdraw
+      description: 'Create withdraw request, after create the platform will send email for verify then will be send to admin to approved'
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: request from user
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                amount:
+                  type: number
+                  description: amount (multiple by 1e8)
+                  example: 20000000000
+                currency:
+                  type: string
+                  description: digital currency unit
+                  enum:
+                    - kaurat
+                    - usd
+                    - cny
+                  example: kaurat
+                address:
+                  type: string
+                  description: address to transfer to
+                  example: df574Dd990C4db23756356B924F4a50b8D7832E4
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Withdraw_Invoice'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /token/_withdraw/_resend_verify_code:
+    post:
+      tags:
+        - Withdraw
+      summary: Resend Verify Code
+      security:
+        - api_key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      withdrawId:
+                        type: string
+                        example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/token/_withdraw/{id}':
+    get:
+      tags:
+        - Withdraw
+      summary: Get Withdraw
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: withdraw id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: uid
+          description: user id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Withdraw_Invoice'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/token/_withdraw/{id}/_ack':
+    post:
+      tags:
+        - Withdraw
+      summary: Ack Withdraw
+      description: ack the request when admin has already approved
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: withdraw id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      withdrawId:
+                        type: string
+                        example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/token/_withdraw/{id}/_cancel':
+    post:
+      tags:
+        - Withdraw
+      summary: Cancel Withdraw
+      description: able to cancel if status has not approved yet
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: withdraw id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      withdrawId:
+                        type: string
+                        example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/token/_withdraw/{id}/_verify_code':
+    post:
+      tags:
+        - Withdraw
+      summary: Send Verify Code
+      security:
+        - api_key: []
+      parameters:
+        - name: id
+          in: path
+          description: withdraw id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  description: user id
+                  example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+                code:
+                  type: string
+                  description: verify code which send by platform
+                  example: '30529'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      withdrawId:
+                        type: string
+                        example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users:
+    get:
+      tags:
+        - User
+      summary: Get Users
+      description: List all users in organization
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{uid}':
+    get:
+      tags:
+        - User
+      summary: Get user by user ID
+      parameters:
+        - name: uid
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/User'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/users/{uid}/transactions':
+    get:
+      tags:
+        - User
+      summary: Get Transactions
+      description: List all transactions from user
+      security:
+        - api_key: []
+      parameters:
+        - in: path
+          name: uid
+          description: user id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_completed:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      anyOf:
+                        - $ref: '#/components/schemas/Transaction_Lock'
+                        - $ref: '#/components/schemas/Transaction_Send'
+                        - $ref: '#/components/schemas/Transaction_Swap'
+                        - $ref: '#/components/schemas/Transaction_Request'
+                        - $ref: '#/components/schemas/Transaction_Withdraw'
+        '500':
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            trace_id:
+              type: string
+            message:
+              type: string
+    Token_Request:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: request from user
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        to_uid:
+          type: string
+          description: request to user
+          example: 5KUziQMxqDOSWGaIytZdRgJIZmt
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        done:
+          type: boolean
+          description: whether this request finish or not
+          example: false
+        status:
+          type: number
+          description: 'pending (0), approved (1), rejected (9)'
+          example: 0
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+    Transaction_Lock:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        daily_interest:
+          type: number
+          description: interest that will receive daily
+          example: 5424657.534246575
+        expected_interest:
+          type: number
+          description: expected total interest will receive
+          example: 488219178.08219177
+        expired:
+          type: number
+          description: expired date (in unix)
+          example: 1565049600000
+        period:
+          type: number
+          description: period of deposit
+          example: 90
+        rate:
+          type: number
+          description: rate
+          example: 0.99
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+        type:
+          type: string
+          description: action type
+          example: lock_up
+        uid:
+          type: string
+          description: user id
+          example: 5KUziQMxqDOSWGaIytZdRgJIZmt1
+    Transaction_Request:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: request from user
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        to_uid:
+          type: string
+          description: request to user
+          example: 5KUziQMxqDOSWGaIytZdRgJIZmt
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        sender_username:
+          type: string
+          description: sender username
+          example: Sam
+        receiver_username:
+          type: string
+          description: receiver username
+          example: Tom
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+    Transaction_Send:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: request from user
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        to_uid:
+          type: string
+          description: request to user
+          example: 5KUziQMxqDOSWGaIytZdRgJIZmt
+        sender_username:
+          type: string
+          description: sender username
+          example: Sam
+        receiver_username:
+          type: string
+          description: receiver username
+          example: Tom
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        type:
+          type: string
+          description: action type
+          example: internal_send
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+        note:
+          type: string
+          description: Optional message for take note
+          example: send to tom for a gift.
+    Transaction_Swap:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: request from user
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        amount:
+          type: number
+          description: to be swap amount (multiple by 1e8)
+          example: 1500000000
+        fee:
+          type: number
+          description: fee for swap
+          example: 15000000
+        rate:
+          type: number
+          description: fee rate
+          example: 0.15
+        receive:
+          type: number
+          description: received amount (multiple by 1e8)
+          example: 10000000000
+        from_currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        to_currency:
+          type: string
+          description: digital currency unit
+          example: cny
+        type:
+          type: string
+          description: action type
+          example: swap
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+    Transaction_Withdraw:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        invoice_id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: user id
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        address:
+          type: string
+          description: address to transfer to
+          example: df574Dd990C4db23756356B924F4a50b8D7832E4
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        type:
+          type: string
+          description: action type
+          example: withdraw
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: user id
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        address:
+          type: string
+          description: address to transfer to
+          example: df574Dd990C4db23756356B924F4a50b8D7832E4
+        status:
+          type: number
+          description: 'initial (0), wait confirm (1), wait approve (2), approved (3), cancel (8) or rejected (9)'
+          example: 1
+        isCompleted:
+          type: boolean
+          description: whether this request finish or not
+          example: false
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        type:
+          type: string
+          description: action type
+          example: withdraw
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+    User:
+      type: object
+      properties:
+        ids:
+          type: object
+          properties:
+            running_id:
+              type: number
+              description: running number of registration
+              example: 5
+            btc_address:
+              type: string
+              description: bitcoin address
+              example: df574Dd990C4db23756356B924F4a50b8D7832E4
+        kyc:
+          type: object
+          properties:
+            timezone:
+              type: string
+              description: timezone of user
+              example: Asia/Bangkok
+            email:
+              type: string
+              description: email address
+              example: kaurat@gmail.com
+            tier:
+              type: number
+              description: user tier determine how much user able to withdraw
+              example: 1
+            username_u:
+              type: string
+              description: username in uppercase
+              example: HARRY01
+            img:
+              type: string
+              description: image url
+              example: 'http://www.kaurat.com/images/john.png'
+            lastname:
+              type: string
+              example: Potter
+            created_time:
+              type: number
+              example: 1557205561493
+            firstname:
+              type: string
+              example: Harry
+            username:
+              type: string
+              example: Harry01
+            updated_time:
+              type: number
+              example: 1557205561493
+            role:
+              type: string
+              description: Optional role of user
+              example: user
+            birthdate:
+              type: number
+              description: date of birth
+              example: 1557205561493
+            isTierInReview:
+              type: boolean
+              description: if user is in review or not
+              example: false
+            oid:
+              type: string
+              description: organization id
+              example: jCTXdl8GxzC5LMKKXQL9
+        wallet:
+          type: object
+          properties:
+            kaurat:
+              type: number
+              description: kaurat currency (multiple by 1e8)
+              example: 1178441921385
+            usd:
+              type: number
+              description: usd currency (multiple by 1e8)
+              example: 0
+            cny:
+              type: number
+              description: cny currency (multiple by 1e8)
+              example: 66000000000
+    Withdraw_Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1cda12ab-da9f-465e-a24d-6b88d97bf9da
+        uid:
+          type: string
+          description: user id
+          example: DAwbj4yY9aXoYJZ4ZVKVbcriU3t1
+        address:
+          type: string
+          description: address to transfer to
+          example: df574Dd990C4db23756356B924F4a50b8D7832E4
+        status:
+          type: number
+          description: 'initial (0), wait confirm (1), wait approve (2), approved (3), cancel (8) or rejected (9)'
+          example: 1
+        isCompleted:
+          type: boolean
+          description: whether this request finish or not
+          example: false
+        amount:
+          type: number
+          description: amount (multiple by 1e8)
+          example: 200000000000
+        currency:
+          type: string
+          description: digital currency unit
+          example: kaurat
+        type:
+          type: string
+          description: action type
+          example: withdraw
+        timestamp:
+          type: number
+          description: created time
+          example: 1557205561493
+  headers:
+    ExpiresAfter:
+      description: date in UTC when token expires
+      schema:
+        type: string
+        format: date-time
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
