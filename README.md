@@ -1,5 +1,5 @@
 # Kaurat API Reference 📖
-[![Build Status](https://travis-ci.com/CochainLab/kaurat-doc.svg?branch=master)](https://travis-ci.com/CochainLab/kaurat-doc)
+[![Build Status](https://travis-ci.org/kaurats/kaurat-doc.svg?branch=master)](https://travis-ci.org/kaurats/kaurat-doc)
 
 ## Links
 
